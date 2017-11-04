@@ -58,6 +58,9 @@ Config
 This is my default config, it fires up [`shairport-sync`](https://github.com/mikebrady/shairport-sync) and enables it as an AirPlay speaker. Then you 
 can join it from any iOS device and stream music (Spotify in our case) directly into the lights display.
 
+I also install the [`shairport-sync-metadata-reader`](https://github.com/mikebrady/shairport-sync-metadata-reader) module to grab the music
+meta data while streaming..
+
 ```
 [lightshow]
 # We are using shairport-sync to setup an AirPlay Speaker
@@ -69,8 +72,61 @@ use_fifo = False
 input_channels = 2
 input_sample_rate = 44100
 
-[hardware]
-pin_modes = pwm
+```
+
+My Additions
+------------
+
+Copy `./bin` and `./api` into `/home/pi/`
+
+`mkdir /home/pi/tmp`
+
+Add `/home/pi/bin/boot.sh` to your `/etc/rc.local`
+
+This will fire up the web based API server at: `http://raspberrypi.local:8888/`
+
+Endpoints:
+
+* `/show/start`
+* `/show/stop`
+* `/show/enable`
+* `/show/disable`
+* `/lights/on`
+* `/lights/off`
+* `/controller/cylon`
+* `/controller/dance`
+* `/controller/flash`
+* `/controller/random_pattern`
+
+You can (sort of) protect it with a JSON file: `/home/pi/.api.json`
+
+```json
+{
+    "username": "foo",
+    "password": "bar"
+}
+```
+
+I added an IFTTT trigger to Alexa that points to my API so that I can turn them on and off with my Echo's.
+
+Twitter
+-------
+
+Create an App, then get your tokens..
+
+Create a file: `/home/pi/.twitter.json`:
+
+```json
+{
+    "api": {
+        "key": "",
+        "secret": ""
+    },
+    "access": {
+        "token": "",
+        "secret": ""
+    }
+}
 ```
 
 
